@@ -10,6 +10,8 @@ int Interrupt_H1 = 0;   // D2 - INT 0
 int pinHallSensor2 = 3; // D3          <------- Second Hall Sensor
 int Interrupt_H2 = 1;   // D3 - INT 1
 
+//test
+
 int addr = 0;
 struct LastDataType {
   byte CurrentIndex = 0;
