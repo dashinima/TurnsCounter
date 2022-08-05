@@ -1,0 +1,21 @@
+rm -rf .git
+
+git init
+
+git remote add origin https://github.com/dashinima/TurnsCounter
+
+git remote -v (to see the remote origin)
+
+git add -A(add all files)
+
+git commit -m 'Added my project'
+
+git pull --rebase origin main
+
+git pull origin main --allow-unrelated-histories
+
+git push  origin main
+
+git branch -M main
+
+git checkout ThreadRipper
