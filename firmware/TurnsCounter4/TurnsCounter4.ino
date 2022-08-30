@@ -1,29 +1,32 @@
 #include <Wire.h> 
-//#include <LiquidCrystal_I2C.h>
 #include "DigitLedDisplay.h"
 #include <EEPROM.h>
 
-//LiquidCrystal_I2C lcd(0x27,16,2);  // Устанавливаем дисплей
 
 //  Arduino Pin to Display Pin
 //   7 to DIN,      PB3 - 15 pin (11)
 //   6 to CS,       PB4 - 16 pin (12)
 //   5 to CLK     PB5 - 17 pin (13)
-DigitLedDisplay ld = DigitLedDisplay(11, 12, 13);
+DigitLedDisplay ld = DigitLedDisplay(PIN_PB3, PIN_PB4, PIN_PB5);
 
 // Configuration
 
-int pinHallSensor1 = 2; // D2          <------- First Hall Sensor
+int pinHallSensor1 = PIN_PD2; // D2          <------- First Hall Sensor
 int Interrupt_H1 = 0;   // D2 - INT 0
-int pinHallSensor2 = 3; // D3          <------- Second Hall Sensor
+int pinHallSensor2 = PIN_PD3; // D3          <------- Second Hall Sensor
 int Interrupt_H2 = 1;   // D3 - INT 1
+
+
+byte LED_PIN_G = PIN_PB0; // 8
+byte LED_PIN_B = PIN_PB1; // 9;
+byte LED_PIN_R = PIN_PB2; // 10;
 
 //test
 
-int addr = 0;
+volatile int addr = 0;
 struct LastDataType {
   byte CurrentIndex = 0;
-  volatile long TurnsCountArray[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  volatile long TurnsCountArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 };
 volatile LastDataType LastData;
 
@@ -47,31 +50,30 @@ void setup()
   /* Set the digit count */
   ld.setDigitLimit(8);
   
-  TurnsCount = 0;
-  IsNextTurn = true;
-  
-  Serial.begin(250000);
-  
-  pinMode(8, OUTPUT);
-  digitalWrite(8, LOW);
-  pinMode(9, OUTPUT);
-  digitalWrite(9, HIGH);
+    
+  pinMode(LED_PIN_R, OUTPUT);
+  digitalWrite(LED_PIN_R, HIGH);
+  pinMode(LED_PIN_G, OUTPUT);
+  digitalWrite(LED_PIN_G, HIGH);
+  pinMode(LED_PIN_B, OUTPUT);
+  digitalWrite(LED_PIN_B, HIGH);
 
   pinMode(pinHallSensor1, INPUT);
   pinMode(pinHallSensor2, INPUT);
   attachInterrupt(Interrupt_H1, HallSensor_1, RISING);
   attachInterrupt(Interrupt_H2, HallSensor_2, RISING);
+
+//  //Writing Zero Data to EEPROM
+//  TurnsCount = 0;
+//  for (byte i = 1; i <= 10; i++) {
+//    LastData.CurrentIndex = i;
+//    LastData.TurnsCountArray[ LastData.CurrentIndex ] = LastData.CurrentIndex;
+//  }
+//  EEPROM.put(addr, LastData);   
+//  digitalWrite(LED_PIN_G, LOW);
   
-//  lcd.init();                     
-//  lcd.backlight();// Включаем подсветку дисплея
-
-  //Writing Zero Data to EEPROM
-//  noInterrupts();
-//  EEPROM.put(addr, LastData);
-//  interrupts();
-
   // Restore Last Data from EEPROM, Read and Display Typing
-  LastData = EEPROM.get(addr);
+  EEPROM.get( addr, LastData);
   byte thisIndex = 0;
   for (byte i = 1; i <= 10; i++) {
     if ( (LastData.CurrentIndex+i)<=10 ) {
@@ -79,20 +81,14 @@ void setup()
     }
     else {
       thisIndex = (LastData.CurrentIndex+i)-10;
-    }
+    };
     TurnsCount = LastData.TurnsCountArray[ thisIndex ];
-//    lcd.setCursor(0, 0);
-//    lcd.print("Index: "); 
-//    lcd.setCursor(7, 0);
-//    lcd.print(thisIndex); 
-//    lcd.setCursor(0, 1);
-//    lcd.print("Turns: "); 
-//    lcd.setCursor(7, 1);
-//    lcd.print(TurnsCount);     
     ld.printDigit(TurnsCount);
     delay(1500);
-  }
+  };
   
+  TurnsCount = 0;
+  IsNextTurn = true;
 }
 
 //################################################################
@@ -101,6 +97,9 @@ void setup()
 ISR(RESET_vect) {
   // ----------------
   LastData.CurrentIndex = LastData.CurrentIndex+1;
+  if (LastData.CurrentIndex>10) {
+    LastData.CurrentIndex = 1;
+  };
   LastData.TurnsCountArray[ LastData.CurrentIndex+1 ] = TurnsCount;
   EEPROM.put(addr, LastData);
 }
@@ -118,9 +117,6 @@ void HallSensor_2() {
 //################################################################
 void loop()
 {
-//  lcd.setCursor(0, 0);
-//  lcd.print("Turns count:    ");
-//  lcd.setCursor(0, 1);
   //*********************************************
   
   if ( (Hall_1_IsRising == true) && (Hall_2_IsRising == true) ) { 
@@ -136,9 +132,5 @@ void loop()
   //*********************************************
   
   //*********************************************
-  // Выводим на экран количество секунд с момента запуска ардуины
-//  lcd.setCursor(0, 1);
-//  lcd.print(TurnsCount);  
-//  lcd.print("                ");   
   ld.printDigit(TurnsCount);
 }

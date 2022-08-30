@@ -22,9 +22,9 @@
   https://www.arduino.cc/en/Tutorial/BuiltInExamples/Blink
 */
 
-  byte LED_PIN_R = PIN_PB0; // 8
-  byte LED_PIN_G = PIN_PB1; // 9;
-  byte LED_PIN_B = PIN_PB2; // 10;
+  byte LED_PIN_G = PIN_PB0; // 8
+  byte LED_PIN_B = PIN_PB1; // 9;
+  byte LED_PIN_R = PIN_PB2; // 10;
 
 // the setup function runs once when you press reset or power the board
 void setup() {

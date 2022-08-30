@@ -8,9 +8,9 @@
 //   5 to CLK     PB5 - 17 pin (13)
 DigitLedDisplay ld = DigitLedDisplay(11, 12, 13);
 
-  byte LED_PIN_R = PIN_PB0; // 8
-  byte LED_PIN_G = PIN_PB1; // 9;
-  byte LED_PIN_B = PIN_PB2; // 10;
+  byte LED_PIN_G = PIN_PB0; // 8
+  byte LED_PIN_B = PIN_PB1; // 9;
+  byte LED_PIN_R = PIN_PB2; // 10;
 
 void setup() {
   pinMode(LED_PIN_R, OUTPUT);
