@@ -8,7 +8,14 @@
 //   5 to CLK     PB5 - 17 pin (13)
 DigitLedDisplay ld = DigitLedDisplay(11, 12, 13);
 
+  byte LED_PIN_R = PIN_PB0; // 8
+  byte LED_PIN_G = PIN_PB1; // 9;
+  byte LED_PIN_B = PIN_PB2; // 10;
+
 void setup() {
+  pinMode(LED_PIN_R, OUTPUT);
+  pinMode(LED_PIN_G, OUTPUT);
+  pinMode(LED_PIN_B, OUTPUT);
 
   /* Set the brightness min:1, max:15 */
   ld.setBright(10);
@@ -73,5 +80,19 @@ void loop() {
   /* Clear all display value */
   ld.clear();
   delay(500);
+
+  
+  digitalWrite(LED_PIN_R, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_PIN_R, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_PIN_G, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_PIN_G, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_PIN_B, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_PIN_B, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
 
 }
