@@ -1,15 +1,8 @@
 #include <Wire.h> 
-//#include <LiquidCrystal_I2C.h>
-#include "DigitLedDisplay.h"
+#include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
 
-//LiquidCrystal_I2C lcd(0x27,16,2);  // Устанавливаем дисплей
-
-//  Arduino Pin to Display Pin
-//   7 to DIN,      PB3 - 15 pin (11)
-//   6 to CS,       PB4 - 16 pin (12)
-//   5 to CLK     PB5 - 17 pin (13)
-DigitLedDisplay ld = DigitLedDisplay(11, 12, 13);
+LiquidCrystal_I2C lcd(0x27,16,2);  // Устанавливаем дисплей
 
 // Configuration
 
@@ -23,7 +16,7 @@ int Interrupt_H2 = 1;   // D3 - INT 1
 int addr = 0;
 struct LastDataType {
   byte CurrentIndex = 0;
-  volatile long TurnsCountArray[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  volatile long TurnsCountArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 };
 volatile LastDataType LastData;
 
@@ -40,30 +33,19 @@ volatile long TurnsCount = 0;
 //################################################################
 //################################################################
 void setup()
-{
-  /* Set the brightness min:1, max:15 */
-  ld.setBright(10);
-
-  /* Set the digit count */
-  ld.setDigitLimit(8);
-  
+{  
   TurnsCount = 0;
   IsNextTurn = true;
   
   Serial.begin(250000);
   
-  pinMode(8, OUTPUT);
-  digitalWrite(8, LOW);
-  pinMode(9, OUTPUT);
-  digitalWrite(9, HIGH);
-
   pinMode(pinHallSensor1, INPUT);
   pinMode(pinHallSensor2, INPUT);
   attachInterrupt(Interrupt_H1, HallSensor_1, RISING);
   attachInterrupt(Interrupt_H2, HallSensor_2, RISING);
   
-//  lcd.init();                     
-//  lcd.backlight();// Включаем подсветку дисплея
+  lcd.init();                     
+  lcd.backlight();// Включаем подсветку дисплея
 
   //Writing Zero Data to EEPROM
 //  noInterrupts();
@@ -81,15 +63,14 @@ void setup()
       thisIndex = (LastData.CurrentIndex+i)-10;
     }
     TurnsCount = LastData.TurnsCountArray[ thisIndex ];
-//    lcd.setCursor(0, 0);
-//    lcd.print("Index: "); 
-//    lcd.setCursor(7, 0);
-//    lcd.print(thisIndex); 
-//    lcd.setCursor(0, 1);
-//    lcd.print("Turns: "); 
-//    lcd.setCursor(7, 1);
-//    lcd.print(TurnsCount);     
-    ld.printDigit(TurnsCount);
+    lcd.setCursor(0, 0);
+    lcd.print("Index: "); 
+    lcd.setCursor(7, 0);
+    lcd.print(thisIndex); 
+    lcd.setCursor(0, 1);
+    lcd.print("Turns: "); 
+    lcd.setCursor(7, 1);
+    lcd.print(TurnsCount);     
     delay(1500);
   }
   
@@ -118,9 +99,9 @@ void HallSensor_2() {
 //################################################################
 void loop()
 {
-//  lcd.setCursor(0, 0);
-//  lcd.print("Turns count:    ");
-//  lcd.setCursor(0, 1);
+  lcd.setCursor(0, 0);
+  lcd.print("Turns count:    ");
+  lcd.setCursor(0, 1);
   //*********************************************
   
   if ( (Hall_1_IsRising == true) && (Hall_2_IsRising == true) ) { 
@@ -137,8 +118,7 @@ void loop()
   
   //*********************************************
   // Выводим на экран количество секунд с момента запуска ардуины
-//  lcd.setCursor(0, 1);
-//  lcd.print(TurnsCount);  
-//  lcd.print("                ");   
-  ld.printDigit(TurnsCount);
+  lcd.setCursor(0, 1);
+  lcd.print(TurnsCount);  
+  lcd.print("                ");  
 }

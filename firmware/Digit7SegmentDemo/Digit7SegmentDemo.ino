@@ -44,7 +44,7 @@ void loop() {
     ld.printDigit(i);
 
     /* Start From Digit 4 */
-    ld.printDigit(i, 4);
+    ld.printDigit(i, 8);
     delay(50);
   }
 
@@ -82,17 +82,17 @@ void loop() {
   delay(500);
 
   
-  digitalWrite(LED_PIN_R, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);                       // wait for a second
-  digitalWrite(LED_PIN_R, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);                       // wait for a second
-  digitalWrite(LED_PIN_G, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);                       // wait for a second
-  digitalWrite(LED_PIN_G, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);                       // wait for a second
-  digitalWrite(LED_PIN_B, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);                       // wait for a second
-  digitalWrite(LED_PIN_B, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);                       // wait for a second
+//  digitalWrite(LED_PIN_R, HIGH);   // turn the LED on (HIGH is the voltage level)
+//  delay(1000);                       // wait for a second
+//  digitalWrite(LED_PIN_R, LOW);    // turn the LED off by making the voltage LOW
+//  delay(1000);                       // wait for a second
+//  digitalWrite(LED_PIN_G, HIGH);   // turn the LED on (HIGH is the voltage level)
+//  delay(1000);                       // wait for a second
+//  digitalWrite(LED_PIN_G, LOW);    // turn the LED off by making the voltage LOW
+//  delay(1000);                       // wait for a second
+//  digitalWrite(LED_PIN_B, HIGH);   // turn the LED on (HIGH is the voltage level)
+//  delay(1000);                       // wait for a second
+//  digitalWrite(LED_PIN_B, LOW);    // turn the LED off by making the voltage LOW
+//  delay(1000);                       // wait for a second
 
 }
